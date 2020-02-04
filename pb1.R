@@ -46,8 +46,7 @@ p1ex2_3 <- function() {
   lines(pois3$density, type = "o", col = "violetred3") 
   lines(pois4$density, type = "o", col = "salmon") 
   lines(pois5$density, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=1)
-  
+  legend("topright", testValues, col = plotColours, pch=10)
   #graficele pentru masa
   plot(pois1$mass, type = "o", col = "magenta", main = "Poisson Mass") 
   lines(pois2$mass, type = "o", col = "dark red")
@@ -183,15 +182,15 @@ p1ex4 <- function(n, p){
   }
   
   aproximareNormalaTLC <- function(k, n, p){
-    return(dnorm((k - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
+    return(pnorm((k - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
   }
   
   aproximareNormalaFactorCorectie <- function(k, n, p){
-    return(dnorm((k - 0.5 - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
+    return(pnorm((k - 0.5 - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
   }
   
   aproximareCampPaulson <- function(c, miu, sigma){
-    return(dnorm((c - miu) / sigma, mean = 0, sd = 1))
+    return(pnorm((c - miu) / sigma, mean = 0, sd = 1))
   }
   
   raspunsuri <- matrix(ncol = 6, nrow = 10);
@@ -256,6 +255,64 @@ p1ex5 <- function(){
     }
 }
 
-p1ex5();
+#p1ex5();
+
+p1ex6 <- function(){
+  sd <- function(miu, sigma, lambda) {
+    return(Vectorize(function(x) {
+      return(2 / sigma *
+               dnorm((x - miu) / sigma, mean = 0, sd = 1) * 
+               pnorm((lambda * ((x - miu) / sigma)), mean = 0, sd = 1))
+    }))
+  }
+  
+  plotColours <- c("magenta", "dark red", "violetred3","salmon", "blue")
+  testValues <- c("1", "2", "5", "10", "100")
+  
+  plot(sd(1, 2, 3))
+  plot(sd(1, 30, 3), add=TRUE, col = "green")
+  plot(sd(1, 10, 4), add=TRUE, col = "dark red")
+  plot(sd(1, 8, 3), add=TRUE, col = "magenta")
+  plot(sd(1, 1, 1), add=TRUE, col = "red")
+  legend("topright", testValues, col = plotColours, pch=10)
+
+}
 
 
+p1ex7 <- function(n, p) {
+  ecuatie <- function(n, p) {
+    return(Vectorize(function(lambda) {
+      argUp1 <- (1 - ((2 / pi) * ((lambda ^ 2) / (1 + lambda ^ 2)))) ^ 3
+      argDown1 <- (2 / pi) * (4 / pi - 1) ^ 2 * ((lambda ^ 2) / (1 + lambda ^ 2)) ^ 3
+      argUp2 <- n * p * (1 - p)
+      argDown2 <- (1 - 2 * p) ^ 2
+      
+      return(argUp1 / argDown1 - argUp2 / argDown2)
+    }))
+  }
+  
+  
+  functie <- ecuatie(n, p)
+  plot(functie)
+  solution <- uniroot(f = functie, interval = c(0, 1000))
+  
+  solutie <- solution$root
+  
+  print(solutie)
+  
+  lambda <- sign(1 - (2 * p)) * sqrt(solutie)
+  print(lambda) 
+  
+  sigmaPatrat <- n * p * (1 - p) / (1 - ((2 / pi) * (solutie / (1 + solutie))))
+  print(sigmaPatrat)
+  
+  sigma <- sqrt(sigmaPatrat)
+  
+  miu <- n * p - sigma * sqrt((2 / pi) * (solutie / (1 + solutie)))
+  print(miu)
+  
+  result <- c(lambda, sigma, miu)
+  return(result)
+  }
+
+p1ex7(25, 0.05)
