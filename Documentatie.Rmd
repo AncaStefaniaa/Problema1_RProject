@@ -14,11 +14,48 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Problema 1.4
 
 ```{r, echo=FALSE}
-rezolvari <- p1ex4()
 
 knitr::kable(
-
+  p1ex4(25, 0.05),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption="n = 25, p = 0.05"
 )
+
+knitr::kable(
+  p1ex4(25, 0.1),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption = "n = 25, p = 0.1"
+)
+
+knitr::kable(
+  p1ex4(50, 0.05),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption = "n = 50, p = 0.05"
+)
+
+knitr::kable(
+  p1ex4(50, 0.1),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption = "n = 50, p = 0.1"
+)
+
+knitr::kable(
+  p1ex4(100, 0.05),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption="n = 100, p = 0.05"
+)
+
+knitr::kable(
+  p1ex4(100, 0.1),
+  col.names = c("k", "Binomiala", "Poisson", "Normala", "Normala Corectie", "Camp-Paulson"),
+  caption = "n = 100, p = 0.1"
+)
+```
+
+### Problema 1.5
+```{r, echo=FALSE}
+
+p1ex5()
 ```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

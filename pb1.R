@@ -173,7 +173,7 @@ p1ex2_3 <- function() {
 #Exercitiul 4
 #calculez variabilele folosite in functii
 
-p1ex4 <- function(){
+p1ex4 <- function(n, p){
   
   aproximarePoisson <- function(k, lambda){
     suma <- 0
@@ -182,73 +182,80 @@ p1ex4 <- function(){
     return(suma)
   }
   
-  aproximareNormalaTLC <- function(k, n, p, miu, sigma){
-    return(dnorm((k - n * p) / sqrt(n * p * (1 - p)), mean = miu, sd = sigma))
+  aproximareNormalaTLC <- function(k, n, p){
+    return(dnorm((k - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
   }
   
-  aproximareNormalaFactorCorectie <- function(k, n, p, miu, sigma){
-    return(dnorm((k - 0.5 - n * p) / sqrt(n * p * (1 - p)), mean = miu, sd = sigma))
+  aproximareNormalaFactorCorectie <- function(k, n, p){
+    return(dnorm((k - 0.5 - n * p) / sqrt(n * p * (1 - p)), mean = 0, sd = 1))
   }
   
   aproximareCampPaulson <- function(c, miu, sigma){
-    return(dnorm((c - miu) / sigma, mean = miu, sd = sigma))
+    return(dnorm((c - miu) / sigma, mean = 0, sd = 1))
   }
   
-  raspunsuri_a <- c();
-  raspunsuri_b <- c();
-  raspunsuri_c <- c();
-  raspunsuri_d <- c();
-  
-  for(n in c(25, 50, 100))  
-    for(p in c(0.05, 0.1))
-      for(k in 1:10) {
-        a <- 1 / (9 * (n - k))
-        b <- 1 / (9 * (k + 1))
-        r <- ((k + 1) * (1 - p)) / (p * (n - k))
-        sigmaPatrat <- a + b * r ^ (2/3)
-        c <- (1 - b) * r ^ (1/3)
-        miu <- 1 - a
-        lambda <- n * p
-        
-        pereche_n_p_k = list(n = n, p = p, k = k)
-        
-        aprox_a <- aproximarePoisson(k, lambda)
-        raspunsuri_a <- c(raspunsuri_a, list(pereche = pereche_n_p_k, valoare = aprox_a))
-        
-        aprox_b <- aproximareNormalaTLC(k, n, p, miu, sqrt(sigmaPatrat))
-        raspunsuri_b <- c(raspunsuri_b, list(pereche = pereche_n_p_k, valoare = aprox_b))
-        
-        aprox_c <- aproximareNormalaFactorCorectie(k, n, p, miu, sqrt(sigmaPatrat))
-        raspunsuri_c <- c(raspunsuri_c, list(pereche = pereche_n_p_k, valoare = aprox_c))
-        
-        aprox_d <- aproximareCampPaulson(c, miu, sqrt(sigmaPatrat))
-        raspunsuri_d <- c(raspunsuri_d, list(pereche = pereche_n_p_k, valoare = aprox_d))
-      }
+  raspunsuri <- matrix(ncol = 6, nrow = 10);
 
-  return(list(
-    a = raspunsuri_a,
-    b = raspunsuri_b,
-    c = raspunsuri_c,
-    d = raspunsuri_d
-  ))
+  for(k in 1:10) {
+    a <- 1 / (9 * (n - k))
+    b <- 1 / (9 * (k + 1))
+    r <- ((k + 1) * (1 - p)) / (p * (n - k))
+    sigmaPatrat <- a + b * r ^ (2/3)
+    c <- (1 - b) * r ^ (1/3)
+    miu <- 1 - a
+    lambda <- n * p
+    
+    aprox_a <- aproximarePoisson(k, lambda)
+    aprox_b <- aproximareNormalaTLC(k, n, p)
+    aprox_c <- aproximareNormalaFactorCorectie(k, n, p)
+    aprox_d <- aproximareCampPaulson(c, miu, sqrt(sigmaPatrat))
+    
+    raspunsuri[k, 1] <- k
+    raspunsuri[k, 2] <- dbinom(k, n, p)
+    raspunsuri[k, 3] <- aprox_a
+    raspunsuri[k, 4] <- aprox_b
+    raspunsuri[k, 5] <- aprox_c
+    raspunsuri[k, 6] <- aprox_d
+  }
+
+  return(raspunsuri)
 }
 
-rasp <- p1ex4()
+#test <- p1ex4(25, 0.05)
 
-# lambda = 4.8
-# x = 0:17
-# 
-# dpoission <- function(x, lambda){
-#   xlambda <- dpois(x, lambda)
-#   return(xlambda)
-# }
+p1ex5 <- function(){
+  
+  for(n in c(25, 50, 100))
+    for(p in c(0.05, 0.1)){
+      
+      matrice <- p1ex4(n, p)
+      max1 <- -1
+      max2 <- -1
+      max3 <- -1
+      max4 <- -1
+      for(k in 1:10){
+        if(abs(matrice[k, 2] - matrice[k, 3]) > max1)
+          max1 <- abs(matrice[k, 2] - matrice[k, 3])
+        if(abs(matrice[k, 2] - matrice[k, 4]) > max2)
+          max2 <- abs(matrice[k, 2] - matrice[k, 4])
+        if(abs(matrice[k, 2] - matrice[k, 5]) > max3)
+          max3 <- abs(matrice[k, 2] - matrice[k, 5])
+        if(abs(matrice[k, 2] - matrice[k, 6]) > max4)
+          max4 <- abs(matrice[k, 2] - matrice[k, 6])
+      }
+      
+      maxPoints <- c(max1, max2, max3, max4)
+      
+      
+      plot(NA, NA, main = "Max Points", pct = 10)
+      points(1, max1, col = "green")
+      points(2, max2, col = "green")
+      points(3, max3, col = "green")
+      points(4, max4, col = "green")
+      #points(maxPoints, col = "magenta")
+    }
+}
 
-#dpoission(x, lambda)
+p1ex5();
 
-
-# test <- function() {
-#   gigi <- c(10, 122)
-#   for(i in gigi)
-#     print(i)
-# }
 
