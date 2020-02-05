@@ -1,0 +1,105 @@
+---
+title: "Documentation"
+author: "Sava Daniel - Gerasim Mihai - Ilicea Anca"
+date: "05 02 2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+source('2.R')
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problema 2
+# a) Implementarea integralei Gamma
+```{r}
+fgam
+```
+
+
+# b) Implementarea integralei Beta
+```{r}
+fbet
+```
+
+
+# c) Calcul de probabilități
+Pentru a calcula probabilitățile, trebuie să calculăm funcțiile de densitate:
+
+- pentru distribuția Gamma
+```{r}
+gamma_function
+```
+
+- pentru distribuția Beta
+```{r}
+beta_function
+```
+
+**Rezultate:**
+
+1) P(X < 3)
+```{r, echo=FALSE}
+fprobgamma1(a, b)
+fprobgamma1(m, n)
+fprobgamma1(x, y)
+```
+2) P(2 < X < 5)
+```{r, echo=FALSE}
+fprobgamma2(a, b)
+fprobgamma2(m, n)
+fprobgamma2(x, y)
+```
+3) P(3 < X < 4 | X > 2)
+```{r, echo=FALSE}
+fprobgamma3(a, b)
+fprobgamma3(m, n)
+fprobgamma3(x, y)
+```
+4) P(Y > 2)
+```{r, echo=FALSE}
+fprobbeta4(a, b)
+fprobbeta4(m, n)
+fprobbeta4(x, y)
+```
+5) P(4 < Y < 6)
+```{r, echo=FALSE}
+fprobbeta5(a, b)
+fprobbeta5(m, n)
+fprobbeta5(x, y)
+```
+6) P(0 < Y < 1 | Y < 7)
+```{r, echo=FALSE}
+fprobbeta6(a, b)
+fprobbeta6(m, n)
+fprobbeta6(x, y)
+```
+7) P(X + Y < 5) 
+```{r, echo=FALSE}
+fprob7(a, b)
+fprob7(m, n)
+fprob7(x, y)
+```
+8) P(X - Y > 0.5)
+```{r, echo=FALSE}
+fprob8(a, b)
+fprob8(m, n)
+fprob8(x, y)
+```
+9) P(X + Y > 3 | X - Y > 0.5)
+```{r, echo=FALSE}
+fprob9(a, b)
+fprob9(m, n)
+fprob9(x, y)
+```
+
+
+# d) Comparare cu funcții de sistem
+```{r, echo=FALSE}
+knitr::kable(
+  print_results(a, b),
+  caption = "a = 3, b = 2"
+)
+```
+
+Se observă unele diferențe între probabilitățile calculate manual și cele în care au fost folosite funcții din R. Acest lucru este cauzat de erori de aproximare atunci când se fac calcule cu mai multe zecimale. Totuși, aceste diferențe sunt < 0,01. 
