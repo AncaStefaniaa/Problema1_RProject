@@ -414,13 +414,13 @@ fcomplrepcom <- function (A, n, m){
 #' 
 #' @returns the median @b median.
 #' 
-medianXY <- function (A, n ,m){
+medianXY <- function (A, n, m, coefx, coefy){
   
   median <- 0
   
   for(line in 1 : n)
     for(column in 1 : m)
-      median <- median + A [n + 2, column] * A [line, m + 2] * A[line, column]
+      median <- median + coefx * coefy * A [n + 2, column] * A [line, m + 2] * A[line, column]
   
   return (median)
 }
@@ -434,12 +434,12 @@ medianXY <- function (A, n ,m){
 #' 
 #' @returns the median @b median.
 #' 
-medianX <- function (A, n ,m){
+medianX <- function (A, n, m, coef){
   
   median <- 0
   
   for(column in 1 : m)
-      median <- median + A [n + 2, column] * A[n + 1, column]
+      median <- median + coef * A [n + 2, column] * A[n + 1, column]
     
   return (median)
 }
@@ -452,15 +452,16 @@ medianX <- function (A, n ,m){
 #' 
 #' @returns the median @b median.
 #' 
-medianY <- function (A, n ,m){
+medianY <- function (A, n, m, coef){
   
   median <- 0
   
   for(line in 1 : n)
-      median <- median + A [line, m + 2] * A[line, m + 1]
+      median <- median + coef * A [line, m + 2] * A[line, m + 1]
   
   return (median)
 }
+
 
 
 #' 
@@ -469,14 +470,15 @@ medianY <- function (A, n ,m){
 #' 
 #' @returns the covergence @b cov.
 #' 
-P3C1 <- function (A, n, m){
+P3C1 <- function (A, n, m, coefx, coefy){
   
   
-  cov <- medianXY (A, n ,m)
-  cov <- cov - medianX (A, n ,m) * medianY (A, n ,m)
+  cov <- medianXY (A, n, m, coefx, coefy)
+  cov <- cov - medianX (A, n, m, coefx) * medianY (A, n, m, coefy)
   
   return (cov)
 }
+
 
 #' 
 #' @brief Exercise 3, paragraph c2. Calculates the probability P(0 < X < 5 | Y > 4)
@@ -629,7 +631,7 @@ medianYSquared <- function (A, n ,m){
 #'
 variationX <- function (A, n, m){
   
-  variation <- medianXSquared (A, n, m) - medianX(A, n ,m) * medianX(A, n, m)
+  variation <- medianXSquared (A, n, m) - medianX(A, n, m, 1) * medianX(A, n, m, 1)
   return (variation)
 }
 
@@ -641,7 +643,7 @@ variationX <- function (A, n, m){
 #'
 variationY <- function (A, n, m){
   
-  variation <- medianYSquared (A, n, m) - medianY(A, n ,m) * medianY(A, n, m)
+  variation <- medianYSquared (A, n, m) - medianY(A, n, m, 1) * medianY(A, n, m, 1)
   return (variation)
 }
 
@@ -653,9 +655,9 @@ variationY <- function (A, n, m){
 #'
 fvernecor <- function (A, n, m){
   
-  ro <- P3C1 (A, n, m)
+  ro <- P3C1 (A, n, m, 1, 1)
   
-  squareRoot <- sqrt(variationX (A, n, m) * variationY (A, n ,m))
+  squareRoot <- sqrt(variationX (A, n, m) * variationY (A, n, m))
   
   ro <- ro / squareRoot
   
@@ -669,31 +671,40 @@ fvernecor <- function (A, n, m){
 }
 
 
-n <- 2
-m <- 3
+n <- 2  #numar de linii
+m <- 3  #numar de coloane
 
 A <- frepcomgenINDEPENDENT (n, m)
+print("A: Matricea independenta creata incomplet este:")
 A
 
 A <- fcomplrepcom (A, n, m)
+print("B: Matricea independenta creata complet este:")
 A
 
 B <- frepcomgenRANDOM (n, m)
+print("A: Matricea cel mai probabil dependenta creata incomplet este:")
 B
 
 B <- fcomplrepcom (B, n, m)
+print("B: Matricea cel mai probabil dependenta creata complet este:")
 B
 
-# medianX (B, n, m)
-# medianY (B, n, m)
-# medianXY (B, n, m)
+print("C) 1):")
+P3C1 (B, n, m, 3, 4)# 3C1
 
-P3C1 (B, n, m)# 3C1
+print("C) 2):")
 P3C2 (B, n, m)# 3C2
+
+print("C) 3):")
 P3C3 (B, n, m)# 3C3
+
+
+print("D) 1)   0 pentru neindependente, 1 pentru independente:")
 fverind (B, n, m)# 3D1 maybe dependant
 fverind (A, n, m)# 3D1 independant
 
+
+print("D) 2)   0 pentru necorelate, 1 pentru corelate:")
 fvernecor (B, n, m)
 fvernecor (A, n, m)# for the independent
-
