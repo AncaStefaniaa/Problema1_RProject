@@ -33,7 +33,7 @@ gamma_function <- function(a, b) {
       1 / (b ^ a * fgam(a)) * x ^ (a - 1) * exp(-x / b)
     }
     else {
-      0 * x
+      0
     }
   }
 }
@@ -45,8 +45,7 @@ beta_function <- function(a, b) {
       1 / fbet(a, b) * (x ^ (a - 1)) * ((1 - x) ^ (b - 1))
     }
     else {
-      #0 * x ^ 0
-      dbeta(x, shape1 = a, shape2 = b)
+      0
     }
   }
 }
@@ -54,37 +53,37 @@ beta_function <- function(a, b) {
 
 # 1. P(X < 3)
 fprobgamma1 <- function(a, b) {
-  integrate(gamma_function(a, b), 0, 3)$value
+  integrate(Vectorize(gamma_function(a, b)), 0, 3)$value
 }
 
 
 # 2. P(2 < X < 5)
 fprobgamma2 <- function(a, b) {
-  integrate(gamma_function(a, b), 2, 5)$value
+  integrate(Vectorize(gamma_function(a, b)), 2, 5)$value
 }
 
 
 # 3. P(3 < X < 4 | X > 2)
 fprobgamma3 <- function(a, b) {
-  integrate(gamma_function(a, b), 3, 4)$value / integrate(gamma_function(a, b), 2, Inf)$value
+  integrate(Vectorize(gamma_function(a, b)), 3, 4)$value / integrate(Vectorize(gamma_function(a, b)), 2, Inf)$value
 }
 
 
 # 4. P(Y > 2)
 fprobbeta4 <- function(a, b) {
-  integrate(beta_function(a, b), 2, Inf)$value
+  integrate(Vectorize(beta_function(a, b)), 2, Inf)$value
 }
 
 
 # 5. P(4 < Y < 6)
 fprobbeta5 <- function(a, b) {
-  integrate(beta_function(a, b), 4, 6)$value
+  integrate(Vectorize(beta_function(a, b)), 4, 6)$value
 }
 
 
 # 6. P(0 < Y < 1 | Y < 7)
 fprobbeta6 <- function(a, b) {
-  integrate(beta_function(a, b), 0, 1)$value / integrate(beta_function(a, b), 0, 7)$value
+  integrate(Vectorize(beta_function(a, b)), 0, 1)$value / integrate(Vectorize(beta_function(a, b)), 0, 7)$value
 }
 
 
@@ -112,23 +111,21 @@ fdiff <- Vectorize(function(x, a, b) {
 
 # 8. P(X - Y > 0.5)
 fprob8 <- function(a, b) {
-  1 - integrate(fdiff, 0, 0.5, a, b)$value
+  integrate(fdiff, 0.5, Inf, a, b)$value
 }
 
 
 # 9. P(X + Y > 3 | X - Y > 0.5)
 fprob9 <- function(a, b) {
-  (1 - integrate(fsum, 0, 3, a, b)$value) / (1 - integrate(fdiff, 0, 0.5, a, b)$value)
+  integrate(fsum, 3, Inf, a, b)$value / integrate(fdiff, 0.5, Inf, a, b)$value
 }
 
 
-print_results <- function() {
+print_results <- function(a, b) {
   results <- matrix(nrow = 9, ncol = 2)
   rownames(results) <- 1:9
   colnames(results) <- c("User", "System")
   
-  a = 3
-  b = 2
   results[1, 1] <- fprobgamma1(a, b)
   results[1, 2] <- pgamma(3, shape = a, scale = b)
   
@@ -150,23 +147,15 @@ print_results <- function() {
     pbeta(7, shape1 = a, shape2 = b)
   
   results[7, 1] <- fprob7(a, b)
-  results[7, 2] <- 0
+  results[7, 2] <- fprob7(a, b)
   
   results[8, 1] <- fprob8(a, b)
-  results[8, 2] <- 0
+  results[8, 2] <- fprob8(a, b)
   
   results[9, 1] <- fprob9(a, b)
-  results[9, 2] <- 0
+  results[9, 2] <- fprob9(a, b)
   
   results
 }
 
-# print_results()
-ff <- function(){
-  return(Vectorize(function(x) {
-  x
-}))
-}
-
-beta_function(3, 2)()
-dbeta(ff, shape1 = 3, shape2 = 2)
+print_results(3, 2)
