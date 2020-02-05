@@ -33,70 +33,58 @@ gamma_function <- function(a, b) {
       1 / (b ^ a * fgam(a)) * x ^ (a - 1) * exp(-x / b)
     }
     else {
-      0
+      0 * x
     }
   }
-  
 }
 
 
 beta_function <- function(a, b) {
-  if (a > 0 && b > 0) {
-    function(x) {
-      if (0 < x && x < 1) {
-        1 / fbet(a, b) * (x ^ (a - 1)) * ((1 - x) ^ (b - 1))
-      }
-      else {
-        #0 * x ^ 0
-        dbeta(x, shape1 = a, shape2 = b)
-      }
+  function(x) {
+    if (0 < x && x < 1 && a > 0 && b > 0) {
+      1 / fbet(a, b) * (x ^ (a - 1)) * ((1 - x) ^ (b - 1))
+    }
+    else {
+      #0 * x ^ 0
+      dbeta(x, shape1 = a, shape2 = b)
     }
   }
-  
 }
 
 
 # 1. P(X < 3)
-# P(x < 3) = F(3)
 fprobgamma1 <- function(a, b) {
   integrate(gamma_function(a, b), 0, 3)$value
 }
 
 
 # 2. P(2 < X < 5)
-# P(2 < X < 5) = F(5) - F(2)
 fprobgamma2 <- function(a, b) {
-  integrate(gamma_function(a, b), 0, 5)$value - integrate(gamma_function(a, b), 0, 2)$value
+  integrate(gamma_function(a, b), 2, 5)$value
 }
 
 
 # 3. P(3 < X < 4 | X > 2)
-# P(3 < X < 4 | X > 2) = P(3 < X < 4) / P(X > 2) = (F(4) - F(3)) / (1 - F(2)) 
 fprobgamma3 <- function(a, b) {
-  (integrate(gamma_function(a, b), 0, 4)$value - integrate(gamma_function(a, b), 0, 3)$value) / 
-    (1 - integrate(gamma_function(a, b), 0, 2)$value)
+  integrate(gamma_function(a, b), 3, 4)$value / integrate(gamma_function(a, b), 2, Inf)$value
 }
 
 
 # 4. P(Y > 2)
-# P(Y > 2) = 1 - G(2)
 fprobbeta4 <- function(a, b) {
-  1 - integrate(beta_function(a, b), 0, 2)$value
+  integrate(beta_function(a, b), 2, Inf)$value
 }
 
 
 # 5. P(4 < Y < 6)
-# P(4 < Y < 6) = G(6) - G(4)
 fprobbeta5 <- function(a, b) {
-  integrate(beta_function(a, b), 0, 6)$value - integrate(beta_function(a, b), 0, 4)$value
+  integrate(beta_function(a, b), 4, 6)$value
 }
 
 
 # 6. P(0 < Y < 1 | Y < 7)
-# P(0 < Y < 1 | Y < 7) = P(0 < Y < 1) / P(Y < 7) = (G(1) - G(0)) / G(7)
 fprobbeta6 <- function(a, b) {
-  integrate(beta_function(a, b), 0, 1)$value - integrate(beta_function(a, b), 0, 0)$value / 
-    integrate(beta_function(a, b), 0, 7)$value
+  integrate(beta_function(a, b), 0, 1)$value / integrate(beta_function(a, b), 0, 7)$value
 }
 
 
@@ -173,4 +161,12 @@ print_results <- function() {
   results
 }
 
-print_results()
+# print_results()
+ff <- function(){
+  return(Vectorize(function(x) {
+  x
+}))
+}
+
+beta_function(3, 2)()
+dbeta(ff, shape1 = 3, shape2 = 2)
