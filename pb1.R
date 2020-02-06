@@ -7,6 +7,7 @@ p1ex1 <- function() {
   print(var(pois))
   print(mean(pois))
   
+  
   binom = rbinom(1000, 15, 0.2)
   print(var(binom))
   print(mean(binom))
@@ -15,11 +16,14 @@ p1ex1 <- function() {
   print(var(exp))
   print(mean(exp))
   
-  norm = rnorm(1000, 200)
+  norm = rnorm(1000, 20)
   print(var(norm))
   print(mean(norm))
+  
+  
 }
 
+p1ex1()
 #Exercitiul 2
 
 p1ex2_3 <- function() {
@@ -46,14 +50,14 @@ p1ex2_3 <- function() {
   lines(pois3$density, type = "o", col = "violetred3") 
   lines(pois4$density, type = "o", col = "salmon") 
   lines(pois5$density, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=10)
+  legend("topright", testValues, col = plotColours, pch = 10)
   #graficele pentru masa
   plot(pois1$mass, type = "o", col = "magenta", main = "Poisson Mass") 
   lines(pois2$mass, type = "o", col = "dark red")
   lines(pois3$mass, type = "o", col = "violetred3") 
   lines(pois4$mass, type = "o", col = "salmon") 
   lines(pois5$mass, type = "o", col = "blue") 
-  legend("bottomright", testValues, col = plotColours, pch=1)
+  legend("bottomright", testValues, col = plotColours, pch = 1)
   
   
   #voi afisa 2 grafice pe o linie
@@ -74,7 +78,7 @@ p1ex2_3 <- function() {
   lines(binom3$density, type = "o", col = "violetred3") 
   lines(binom4$density, type = "o", col = "salmon") 
   lines(binom5$density, type = "o", col = "blue") 
-  legend("topright", testValues1, col = plotColours, pch=1)
+  legend("topright", testValues1, col = plotColours, pch = 1)
   
   #grafic pentru masa
   plot(binom1$mass, type = "o", col = "magenta", main = "Binomial Mass") 
@@ -82,7 +86,7 @@ p1ex2_3 <- function() {
   lines(binom3$mass, type = "o", col = "violetred3") 
   lines(binom4$mass, type = "o", col = "salmon") 
   lines(binom5$mass, type = "o", col = "blue") 
-  legend("bottomright", testValues1, col = plotColours, pch=1)
+  legend("bottomright", testValues1, col = plotColours, pch = 1)
   
   #------------------EXPONEntiala--------------------#
   par(mfrow = c(1, 2))
@@ -98,7 +102,7 @@ p1ex2_3 <- function() {
   lines(exp3$density, type = "o", col = "violetred3") 
   lines(exp4$density, type = "o", col = "salmon") 
   lines(exp5$density, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=1)
+  legend("topright", testValues, col = plotColours, pch = 1)
   
   #grafic pentru masa
   plot(exp1$mass, type = "o", col = "magenta", main = "Exponential Mass") 
@@ -106,17 +110,22 @@ p1ex2_3 <- function() {
   lines(exp3$mass, type = "o", col = "violetred3") 
   lines(exp4$mass, type = "o", col = "salmon") 
   lines(exp5$mass, type = "o", col = "blue") 
-  legend("bottomright", testValues, col = plotColours, pch=1)
+  legend("bottomright", testValues, col = plotColours, pch = 1)
   
   
   #------------------NORMALA--------------------#
   #nuj ce valori sa dau =)))!!!!!!!!!!!!!!!!!!!!!!!!!!!
   par(mfrow = c(1, 2))
-  norm1 = data.frame(density = dnorm(0:200, 2.5, 0.5), mass = pnorm(0:200, 0.5, 0.5), distribution = rnorm(0:200, 0.5, 0.5))
-  norm2 = data.frame(density = dnorm(0:200, 2, 0.2), mass = pnorm(0:200, 0.5, 0.5), distribution = rnorm(0:200, 0.5, 0.5))
-  norm3 = data.frame(density = dnorm(0:200, 5, 0.01), mass = pnorm(0:200, 0.5, 0.5), distribution = rnorm(0:200, 0.5, 0.5))
-  norm4 = data.frame(density = dnorm(0:200, 0, 0.02), mass = pnorm(0:200, 0.5, 0.5), distribution = rnorm(0:200, 0.5, 0.5))
-  norm5 = data.frame(density = dnorm(0:200, 0, 0.2), mass = pnorm(0:200, 0.5, 0.5), distribution = rnorm(0:200, 0.5, 0.5))
+  secventa <- seq(-5, 5, by = 0.05)
+  secventa1 <- seq(-10, 5, by = 0.05)
+  secventa2 <- seq(-5, 20, by = 0.05)
+  secventa3 <- seq(-6, 15, by = 0.05)
+  secventa4 <- seq(-9, 15, by = 0.05)
+  norm1 = data.frame(density = dnorm(secventa, 0, 1), mass = pnorm(secventa, 0, 1), distribution = rnorm(secventa, 0, 1))
+  norm2 = data.frame(density = dnorm(secventa1, 0, 1), mass = pnorm(secventa1, 0, 1), distribution = rnorm(secventa1, 0, 1))
+  norm3 = data.frame(density = dnorm(secventa2, 0, 1), mass = pnorm(secventa2, 0, 1), distribution = rnorm(secventa2, 0, 1))
+  norm4 = data.frame(density = dnorm(secventa3, 0, 1), mass = pnorm(secventa3, 0, 1), distribution = rnorm(secventa3, 0, 1))
+  norm5 = data.frame(density = dnorm(secventa4, 0, 1), mass = pnorm(secventa4, 0, 1), distribution = rnorm(secventa4, 0, 1))
   
   #grafic pentru densitate
   plot(norm1$density, type = "o", col = "magenta", main = "Normal Density") 
@@ -124,7 +133,7 @@ p1ex2_3 <- function() {
   lines(norm3$density, type = "o", col = "violetred3") 
   lines(norm4$density, type = "o", col = "salmon") 
   lines(norm5$density, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=1)
+  legend("topright", testValues, col = plotColours, pch = 1)
   
   #grafic pentru masa
   plot(norm1$mass, type = "o", col = "magenta", main = "Normal Mass") 
@@ -132,40 +141,40 @@ p1ex2_3 <- function() {
   lines(norm3$mass, type = "o", col = "violetred3") 
   lines(norm4$mass, type = "o", col = "salmon") 
   lines(norm5$mass, type = "o", col = "blue") 
-  legend("bottomright", testValues, col = plotColours, pch=1)
+  legend("bottomright", testValues, col = plotColours, pch = 1)
   
   
   
   
   #Exercitiul 3
   par(mfrow = c(2, 2))
-  plot(pois1$distribution, type = "o", col = "magenta", main = "Poisson Density") 
+  plot(pois1$distribution, type = "o", col = "magenta", main = "Poisson Distribution") 
   lines(pois2$distribution, type = "o", col = "dark red")
   lines(pois3$distribution, type = "o", col = "violetred3") 
   lines(pois4$distribution, type = "o", col = "salmon") 
   lines(pois5$distribution, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=1)
+  legend("topright", testValues, col = plotColours, pch = 1)
   
   plot(binom1$distribution, type = "o", col = "magenta", main = "Binomial Distribution") 
   lines(binom2$distribution, type = "o", col = "dark red")
   lines(binom3$distribution, type = "o", col = "violetred3") 
   lines(binom4$distribution, type = "o", col = "salmon") 
   lines(binom5$distribution, type = "o", col = "blue") 
-  legend("topright", testValues1, col = plotColours, pch=1)
+  legend("topright", testValues1, col = plotColours, pch = 1)
   
   plot(exp1$distribution, type = "o", col = "magenta", main = "Exponential Distribution") 
   lines(exp2$distribution, type = "o", col = "dark red")
   lines(exp3$distribution, type = "o", col = "violetred3") 
   lines(exp4$distribution, type = "o", col = "salmon") 
   lines(exp5$distribution, type = "o", col = "blue") 
-  legend("bottomright", testValues, col = plotColours, pch=1)
+  legend("bottomright", testValues, col = plotColours, pch = 1)
   
   plot(norm1$distribution, type = "o", col = "magenta", main = "Normal Distribution") 
   lines(norm2$distribution, type = "o", col = "dark red")
   lines(norm3$distribution, type = "o", col = "violetred3") 
   lines(norm4$distribution, type = "o", col = "salmon") 
   lines(norm5$distribution, type = "o", col = "blue") 
-  legend("topright", testValues, col = plotColours, pch=1)
+  legend("topright", testValues, col = plotColours, pch = 1)
 }
 
 
@@ -193,7 +202,7 @@ p1ex4 <- function(n, p){
     return(pnorm((c - miu) / sigma, mean = 0, sd = 1))
   }
   
-  raspunsuri <- matrix(ncol = 6, nrow = 10);
+  raspunsuri <- matrix(ncol = 6, nrow = 10)
 
   for(k in 1:10) {
     a <- 1 / (9 * (n - k))
@@ -246,16 +255,16 @@ p1ex5 <- function(){
       maxPoints <- c(max1, max2, max3, max4)
       
       
-      plot(NA, NA, main = "Max Points", pct = 10)
-      points(1, max1, col = "green")
-      points(2, max2, col = "green")
-      points(3, max3, col = "green")
-      points(4, max4, col = "green")
+      #plot(maxPoints, main = "Max Points", pct = 10, add = TRUE, col = "dark red")
+       #points(1, max1, col = "green")
+       #points(2, max2, col = "green")
+       #points(3, max3, col = "green")
+      # points(4, max4, col = "green")
       #points(maxPoints, col = "magenta")
     }
 }
 
-#p1ex5();
+p1ex5();
 
 p1ex6 <- function(){
   sd <- function(miu, sigma, lambda) {
@@ -274,10 +283,11 @@ p1ex6 <- function(){
   plot(sd(1, 10, 4), add=TRUE, col = "dark red")
   plot(sd(1, 8, 3), add=TRUE, col = "magenta")
   plot(sd(1, 1, 1), add=TRUE, col = "red")
-  legend("topright", testValues, col = plotColours, pch=10)
+  legend("topright", testValues, col = plotColours, pch = 10)
 
 }
 
+p1ex6()
 
 p1ex7 <- function(n, p) {
   ecuatie <- function(n, p) {
@@ -293,7 +303,7 @@ p1ex7 <- function(n, p) {
   
   
   functie <- ecuatie(n, p)
-  plot(functie)
+  
   solution <- uniroot(f = functie, interval = c(0, 1000))
   
   solutie <- solution$root
@@ -312,7 +322,54 @@ p1ex7 <- function(n, p) {
   print(miu)
   
   result <- c(lambda, sigma, miu)
+  library(sn)
+  barplot(pbinom(q = 0:n,size = n, prob = 0.05), col = "salmon")
+  barplot(pbinom(q = 0:n, size = n, prob = 0.1), col = "green", add = TRUE)
+  barplot(dsn(x= 0:n, dp = c(miu,sigma,lambda)),col = "dark red", add = TRUE)
+  
   return(result)
+  
   }
 
-p1ex7(25, 0.05)
+
+
+p1ex8 <- function(n, p){
+
+  vector <- p1ex7(25, 0.05)
+  print(vector)
+  lambda <- vector[1]
+  sigma <- vector[2]
+  miu <- vector[3]
+
+  raspunsuri <- matrix(ncol = 3, nrow = 10)
+
+
+
+  aproximareNormalaSimetrica <- function(k, n, p){
+    return(Vectorize(function(x){
+    D <- function(t) {
+      2 * dnorm(t) * pnorm(t * lambda)
+    }
+     return(integral(D, -Inf, x))
+   }))
+
+
+    for(k in 1:10) {
+      aproxNS <- aproximareNormalaSimetrica(k, n, p)
+      raspunsuri[k, 1] <- k
+      raspunsuri[k, 2] <- dbinom(k, n, p)
+      raspunsuri[k, 3] <- aproxNS(k, n, p)(x)
+
+
+
+    }
+
+    return(raspunsuri)
+  } 
+  }
+
+
+
+
+
+
